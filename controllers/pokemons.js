@@ -5,9 +5,9 @@ const pokeController = {
     res.send('Hello Pikachu');
   },
   getById: async (req, res) => {
-    let { id } = req.params;
-    const pokemon = pokeData.filter(index => index.id == id);
-    res.send(pokemon);
+    const { id } = req.params;
+    const pokemon = pokeData.filter(item => item.id == id);
+    res.status(200).send(pokemon);
   },
 };
 
