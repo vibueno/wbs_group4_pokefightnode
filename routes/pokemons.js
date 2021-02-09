@@ -1,7 +1,10 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const pokeController = require("../controllers/pokemons");
+const pokeController = require('../controllers/pokemons');
 
-router.get("/", pokeController.getAll);
+// show all users
+router.get('/:id/:info', pokeController.getInfo);
+router.get('/:id', pokeController.getById);
+router.get('/', pokeController.getAll);
 
 module.exports = router;
