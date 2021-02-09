@@ -5,14 +5,12 @@ const pokeController = {
     res.send(pokeData);
   },
   getInfo: async (req, res) => {
-    const { id } = req.params;
-    console.log(id);
+    const { id, info } = req.params;
 
     try {
-      const pokeInfo = pokeData.filter(pokemon => pokemon.id === id);
-
-      console.log(pokeInfo);
-      res.send('Testing');
+      const pokeId = pokeData.filter(pokemon => pokemon.id == id);
+      if (!pokeId[0][info]) res.sendStatus(404);
+      else res.send(pokeId[0][info]);
     } catch (e) {
       console.log(e);
       res.sendStatus(404);
