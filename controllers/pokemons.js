@@ -10,12 +10,11 @@ const pokeController = {
     try {
       const pokeId = pokeData.filter(pokemon => pokemon.id == id);
       if (!pokeId[0][info]) res.sendStatus(404);
-      else res.send(pokeId[0][info]);
+      else res.status(200).send(pokeId[0][info]);
     } catch (e) {
       console.log(e);
       res.sendStatus(404);
     }
   },
 };
-
 module.exports = pokeController;
