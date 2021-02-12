@@ -1,6 +1,61 @@
 const pokeData = require('../pokedex.json');
+const Pokemon = require('../models/Pokemon');
 
 const pokeController = {
+  mongoGetAll: async (req, res) => {
+    try {
+      const dbResult = await Pokemon.find({});
+      res.json({
+        code: 200,
+        data: dbResult,
+      });
+    } catch (e) {
+      console.log(Error(e));
+      res.status(500).json({
+        code: 500,
+        message: 'Internal mongodb error',
+      });
+    }
+  },
+
+  mongoGetById: async (req, res) => {
+    const { id } = req.params;
+    try {
+      const dbResult = await Pokemon.find({
+        id,
+      });
+      res.json({
+        code: 200,
+        data: dbResult,
+      });
+    } catch (e) {
+      console.log(Error(e));
+      res.status(500).json({
+        code: 500,
+        message: 'Internal mongodb error',
+      });
+    }
+  },
+  mongoGetInfo: async (req, res) => {
+    const { id, info } = req.params;
+    try {
+      const dbResult = await Pokemon.find({
+        id,
+      });
+      const dbInfo = dbResult[0][info];
+      res.json({
+        code: 200,
+        data: dbInfo,
+      });
+    } catch (e) {
+      console.log(Error(e));
+      res.status(500).json({
+        code: 500,
+        message: 'Internal mongodb error',
+      });
+    }
+  },
+
   getAll: async (req, res) => {
     res.status(200).send(pokeData);
   },
