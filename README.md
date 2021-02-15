@@ -4,6 +4,7 @@
 
 - [Description](#description)
 - [Organisation](#organisation)
+- [Data](#data)
 - [Live](#live)
 - [Programming](#programming)
 
@@ -14,6 +15,15 @@ This repository contains the back-end part of a Pokemon Fight application, creat
 ## Organisation
 
 [Trello board](https://trello.com/b/Icz4WKYA/group4-pokefight)
+
+## Data
+
+The data for this project has been obtained from these sources:
+
+- https://pokedevs.gitbook.io/pokedex/resources/pokemon
+- https://pokeapi.co/
+
+Since we were provided with a JSON file that didn't include all the information we wanted to use, we went for a [nice ride](./doc/databasemerge.md) to merge all the information together in a database.
 
 ## Live
 
