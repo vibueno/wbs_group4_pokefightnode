@@ -1,16 +1,16 @@
-const pokeData = require('../pokedex.json');
+//const pokeData = require('../data/pokedex.json');
 const Pokemon = require('../models/Pokemon');
 
 const pokeController = {
   mongoGetAll: async (req, res) => {
     try {
       const dbResult = await Pokemon.find({});
-      res.json({
+      res.status(200).json({
         code: 200,
         data: dbResult,
       });
     } catch (e) {
-      console.log(Error(e));
+      console.error(Error(e));
       res.status(500).json({
         code: 500,
         message: 'Internal mongodb error',
@@ -20,16 +20,15 @@ const pokeController = {
 
   mongoGetById: async (req, res) => {
     const { id } = req.params;
+
     try {
-      const dbResult = await Pokemon.find({
-        id,
-      });
-      res.json({
+      const dbResult = await Pokemon.find({ id: parseInt(id) });
+      res.status(200).json({
         code: 200,
         data: dbResult,
       });
     } catch (e) {
-      console.log(Error(e));
+      console.error(Error(e));
       res.status(500).json({
         code: 500,
         message: 'Internal mongodb error',
@@ -39,16 +38,14 @@ const pokeController = {
   mongoGetInfo: async (req, res) => {
     const { id, info } = req.params;
     try {
-      const dbResult = await Pokemon.find({
-        id,
-      });
+      const dbResult = await Pokemon.find({ id: parseInt(id) });
       const dbInfo = dbResult[0][info];
-      res.json({
+      res.status(200).json({
         code: 200,
         data: dbInfo,
       });
     } catch (e) {
-      console.log(Error(e));
+      console.error(Error(e));
       res.status(500).json({
         code: 500,
         message: 'Internal mongodb error',
@@ -56,6 +53,7 @@ const pokeController = {
     }
   },
 
+  /*
   getAll: async (req, res) => {
     res.status(200).send(pokeData);
   },
@@ -76,5 +74,7 @@ const pokeController = {
       res.sendStatus(404);
     }
   },
+  */
 };
+
 module.exports = pokeController;
