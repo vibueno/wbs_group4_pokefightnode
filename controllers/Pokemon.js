@@ -2,7 +2,7 @@
 const Pokemon = require('../models/Pokemon');
 
 const buildResponse = require('../utils/response');
-const { validId } = require('../utils/validations');
+const { validId, validInfoRequest } = require('../utils/validations');
 const {
   httpOK,
   httpBadRequest,
@@ -79,13 +79,18 @@ const pokeController = {
         throw buildResponse(httpBadRequest, 'Incorrect id format');
       const pokemon = await Pokemon.find({ id: parseInt(id) });
 
+      if (!validInfoRequest(info))
+        throw buildResponse(
+          httpBadRequest,
+          'The requested info cannot be fetched'
+        );
+
       if (!pokemon.length)
         throw buildResponse(
           httpNotFound,
           `Pokemon with id ${id} does not exist`
         );
-
-      const pokemonInfo = pokemon[0][info][0];
+      const pokemonInfo = pokemon[0][info.toLowerCase()];
       res
         .status(httpOK)
         .json(
