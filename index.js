@@ -8,7 +8,8 @@ dotenv.config();
 const { PORT } = process.env;
 
 const db = require('./utils/db');
-const { httpNotFound } = require('./utils/constants');
+const { httpNotFound, resOpFailure } = require('./utils/constants');
+
 const buildResponse = require('./utils/response');
 
 const app = express();
@@ -31,7 +32,8 @@ app.get('*', function (req, res) {
     .send(
       buildResponse(
         httpNotFound,
-        "The requested page does not exist. But don't worry. We all have felt lost at some point in our lives."
+        resOpFailure,
+        "The requested page does not exist. But don't worry, we all have felt lost at some point in our lives."
       )
     );
 });
