@@ -3,6 +3,12 @@ const Pokemon = require('../models/Pokemon');
 
 const buildResponse = require('../utils/response');
 const { validId } = require('../utils/validations');
+const {
+  httpOK,
+  httpBadRequest,
+  httpNotFound,
+  httpServerError,
+} = require('../utils/constants');
 
 const pokeController = {
   mongoGetAll: async (req, res) => {
@@ -12,10 +18,10 @@ const pokeController = {
       });
 
       res
-        .status(200)
+        .status(httpOK)
         .json(
           buildResponse(
-            200,
+            httpOK,
             `Succesfully fetched ${pokemonList.length} pokemon`,
             pokemonList
           )
@@ -25,8 +31,10 @@ const pokeController = {
       if (e.status) res.status(e.status).json(e);
       else
         res
-          .status(500)
-          .json(buildResponse(500, 'Internal mongodb error', e.message));
+          .status(httpServerError)
+          .json(
+            buildResponse(httpServerError, 'Internal mongodb error', e.message)
+          );
     }
   },
 
@@ -34,17 +42,21 @@ const pokeController = {
     const { id } = req.params;
 
     try {
-      if (!validId(id)) throw buildResponse(400, 'Incorrect id format');
+      if (!validId(id))
+        throw buildResponse(httpBadRequest, 'Incorrect id format');
       const pokemon = await Pokemon.find({ id: parseInt(id) });
 
       if (!pokemon.length)
-        throw buildResponse(404, `Pokemon with id ${id} does not exist`);
+        throw buildResponse(
+          httpNotFound,
+          `Pokemon with id ${id} does not exist`
+        );
 
       res
-        .status(200)
+        .status(httpOK)
         .json(
           buildResponse(
-            200,
+            httpOK,
             `Succesfully fetched pokemon with id ${id}`,
             pokemon[0]
           )
@@ -54,25 +66,31 @@ const pokeController = {
       if (e.status) res.status(e.status).json(e);
       else
         res
-          .status(500)
-          .json(buildResponse(500, 'Internal mongodb error', e.message));
+          .status(httpServerError)
+          .json(
+            buildResponse(httpServerError, 'Internal mongodb error', e.message)
+          );
     }
   },
   mongoGetInfo: async (req, res) => {
     const { id, info } = req.params;
     try {
-      if (!validId(id)) throw buildResponse(400, 'Incorrect id format');
+      if (!validId(id))
+        throw buildResponse(httpBadRequest, 'Incorrect id format');
       const pokemon = await Pokemon.find({ id: parseInt(id) });
 
       if (!pokemon.length)
-        throw buildResponse(404, `Pokemon with id ${id} does not exist`);
+        throw buildResponse(
+          httpNotFound,
+          `Pokemon with id ${id} does not exist`
+        );
 
       const pokemonInfo = pokemon[0][info][0];
       res
-        .status(200)
+        .status(httpOK)
         .json(
           buildResponse(
-            200,
+            httpOK,
             `Succesfully fetched ${info} from pokemon with id ${id}`,
             pokemonInfo
           )
@@ -82,30 +100,32 @@ const pokeController = {
       if (e.status) res.status(e.status).json(e);
       else
         res
-          .status(500)
-          .json(buildResponse(500, 'Internal mongodb error', e.message));
+          .status(httpServerError)
+          .json(
+            buildResponse(httpServerError, 'Internal mongodb error', e.message)
+          );
     }
   },
 
   /*
   getAll: async (req, res) => {
-    res.status(200).send(pokeData);
+    res.status(httpOK).send(pokeData);
   },
   getById: async (req, res) => {
     const { id } = req.params;
     const pokemon = pokeData.filter(item => item.id == id);
-    res.status(200).send(pokemon);
+    res.status(httpOK).send(pokemon);
   },
   getInfo: async (req, res) => {
     const { id, info } = req.params;
 
     try {
       const pokeId = pokeData.filter(pokemon => pokemon.id == id);
-      if (!pokeId[0][info]) res.sendStatus(404);
-      else res.status(200).send(pokeId[0][info]);
+      if (!pokeId[0][info]) res.sendStatus(httpNotFound);
+      else res.status(httpOK).send(pokeId[0][info]);
     } catch (e) {
       console.log(e);
-      res.sendStatus(404);
+      res.sendStatus(httpNotFound);
     }
   },
   */
