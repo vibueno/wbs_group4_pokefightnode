@@ -106,29 +106,6 @@ const pokeController = {
           );
     }
   },
-
-  /*
-  getAll: async (req, res) => {
-    res.status(httpOK).send(pokeData);
-  },
-  getById: async (req, res) => {
-    const { id } = req.params;
-    const pokemon = pokeData.filter(item => item.id == id);
-    res.status(httpOK).send(pokemon);
-  },
-  getInfo: async (req, res) => {
-    const { id, info } = req.params;
-
-    try {
-      const pokeId = pokeData.filter(pokemon => pokemon.id == id);
-      if (!pokeId[0][info]) res.sendStatus(httpNotFound);
-      else res.status(httpOK).send(pokeId[0][info]);
-    } catch (e) {
-      console.log(e);
-      res.sendStatus(httpNotFound);
-    }
-  },
-  */
 };
 
 module.exports = pokeController;
