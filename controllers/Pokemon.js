@@ -36,13 +36,17 @@ const pokeController = {
     try {
       if (!validId(id)) throw buildResponse(400, 'Incorrect id format');
       const pokemon = await Pokemon.find({ id: parseInt(id) });
+
+      if (!pokemon.length)
+        throw buildResponse(404, `Pokemon with id ${id} does not exist`);
+
       res
         .status(200)
         .json(
           buildResponse(
             200,
             `Succesfully fetched pokemon with id ${id}`,
-            pokemon
+            pokemon[0]
           )
         );
     } catch (e) {
@@ -59,7 +63,11 @@ const pokeController = {
     try {
       if (!validId(id)) throw buildResponse(400, 'Incorrect id format');
       const pokemon = await Pokemon.find({ id: parseInt(id) });
-      const pokemonInfo = pokemon[0][info];
+
+      if (!pokemon.length)
+        throw buildResponse(404, `Pokemon with id ${id} does not exist`);
+
+      const pokemonInfo = pokemon[0][info][0];
       res
         .status(200)
         .json(
