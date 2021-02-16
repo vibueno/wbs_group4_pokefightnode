@@ -4,7 +4,9 @@ const Pokemon = require('../models/Pokemon');
 const pokeController = {
   mongoGetAll: async (req, res) => {
     try {
-      const dbResult = await Pokemon.find({});
+      const dbResult = await Pokemon.find({}).sort({
+        id: 1,
+      });
       res.status(200).json({
         code: 200,
         data: dbResult,
