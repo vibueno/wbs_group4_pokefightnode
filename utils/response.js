@@ -1,4 +1,4 @@
-const { httpOK, httpNotFound } = require('../utils/constants');
+const { httpOK, httpNotFound } = require('./constants');
 
 const buildResponse = (status, message, data) => {
   return {

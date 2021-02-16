@@ -1,4 +1,4 @@
-const { validInfoRequests } = require('../utils/constants');
+const { validInfoRequests } = require('./constants');
 
 const validations = {
   validId: val => {

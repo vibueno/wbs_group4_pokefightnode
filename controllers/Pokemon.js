@@ -1,4 +1,3 @@
-//const pokeData = require('../data/pokedex.json');
 const Pokemon = require('../models/Pokemon');
 
 const buildResponse = require('../utils/response');
