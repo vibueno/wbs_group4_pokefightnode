@@ -1,20 +1,32 @@
 //const pokeData = require('../data/pokedex.json');
 const Pokemon = require('../models/Pokemon');
 
+const buildResponse = require('../utils/response');
+const { validId } = require('../utils/validations');
+
 const pokeController = {
   mongoGetAll: async (req, res) => {
     try {
-      const dbResult = await Pokemon.find({});
-      res.status(200).json({
-        code: 200,
-        data: dbResult,
+      const pokemonList = await Pokemon.find({}).sort({
+        id: 1,
       });
+
+      res
+        .status(200)
+        .json(
+          buildResponse(
+            200,
+            `Succesfully fetched ${pokemonList.length} pokemon`,
+            pokemonList
+          )
+        );
     } catch (e) {
-      console.error(Error(e));
-      res.status(500).json({
-        code: 500,
-        message: 'Internal mongodb error',
-      });
+      console.error(Error(e.message));
+      if (e.status) res.status(e.status).json(e);
+      else
+        res
+          .status(500)
+          .json(buildResponse(500, 'Internal mongodb error', e.message));
     }
   },
 
@@ -22,34 +34,48 @@ const pokeController = {
     const { id } = req.params;
 
     try {
-      const dbResult = await Pokemon.find({ id: parseInt(id) });
-      res.status(200).json({
-        code: 200,
-        data: dbResult,
-      });
+      if (!validId(id)) throw buildResponse(400, 'Incorrect id format');
+      const pokemon = await Pokemon.find({ id: parseInt(id) });
+      res
+        .status(200)
+        .json(
+          buildResponse(
+            200,
+            `Succesfully fetched pokemon with id ${id}`,
+            pokemon
+          )
+        );
     } catch (e) {
-      console.error(Error(e));
-      res.status(500).json({
-        code: 500,
-        message: 'Internal mongodb error',
-      });
+      console.error(Error(e.message));
+      if (e.status) res.status(e.status).json(e);
+      else
+        res
+          .status(500)
+          .json(buildResponse(500, 'Internal mongodb error', e.message));
     }
   },
   mongoGetInfo: async (req, res) => {
     const { id, info } = req.params;
     try {
-      const dbResult = await Pokemon.find({ id: parseInt(id) });
-      const dbInfo = dbResult[0][info];
-      res.status(200).json({
-        code: 200,
-        data: dbInfo,
-      });
+      if (!validId(id)) throw buildResponse(400, 'Incorrect id format');
+      const pokemon = await Pokemon.find({ id: parseInt(id) });
+      const pokemonInfo = pokemon[0][info];
+      res
+        .status(200)
+        .json(
+          buildResponse(
+            200,
+            `Succesfully fetched ${info} from pokemon with id ${id}`,
+            pokemonInfo
+          )
+        );
     } catch (e) {
-      console.error(Error(e));
-      res.status(500).json({
-        code: 500,
-        message: 'Internal mongodb error',
-      });
+      console.error(Error(e.message));
+      if (e.status) res.status(e.status).json(e);
+      else
+        res
+          .status(500)
+          .json(buildResponse(500, 'Internal mongodb error', e.message));
     }
   },
 
