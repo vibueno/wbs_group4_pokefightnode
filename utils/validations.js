@@ -10,12 +10,13 @@ const validations = {
     return validInfoRequests.includes(val) ? true : false;
   },
 
-  validWinners: (hasWon1, hasWon2) => {
-    return hasWon1 != hasWon2;
-  },
-
-  isSet: value => {
-    return value != null;
+  validFightResultFormat: fightResult => {
+    return fightResult.pokemon1 &&
+      fightResult.pokemon2 &&
+      fightResult.winner &&
+      Object.keys(fightResult).length === 3
+      ? true
+      : false;
   },
 };
 
