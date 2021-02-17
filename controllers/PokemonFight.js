@@ -12,15 +12,9 @@ const buildResponse = require('../utils/response');
 const pokemonFightController = {
   create: async (req, res) => {
     const fight = new PokemonFight({
-      pokemon1: {
-        name: 'test',
-        winner: true,
-      },
-      pokemon2: {
-        id: 1,
-        name: 'test',
-        winner: false,
-      },
+      pokemon1: '602709cbeab939b69f3b1232',
+      pokemon2: '602709cbeab939b69f3b1232',
+      winner: '602709cbeab939b69f3b1232',
     });
 
     await fight.save(err => {
