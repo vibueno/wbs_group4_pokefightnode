@@ -26,6 +26,6 @@ const appRoutes = require('./routes/App');
 
 app.use('/', pokemonRoutes);
 
-app.get('*', appRoutes);
+app.use('*', appRoutes);
 
 app.listen(PORT, () => console.log(msgServerStarted));
