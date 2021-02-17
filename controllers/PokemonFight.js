@@ -13,6 +13,13 @@ const buildResponse = require('../utils/response');
 const { validId, validFightResultFormat } = require('../utils/validations');
 
 const getPokemonMongoId = require('../utils/pokemon');
+const {
+  msgInvalidFightResultFormat,
+  msgInvalidIdFormat,
+  msgPokemonUnknown,
+  msgPokemonFightInsertFailure,
+  msgPokemonFightInsertSuccess,
+} = require('../messages');
 
 const pokemonFightController = {
   create: async (req, res) => {
@@ -23,7 +30,7 @@ const pokemonFightController = {
           buildResponse(
             httpBadRequest,
             resOpFailure,
-            'Invalid fight result format'
+            msgInvalidFightResultFormat
           )
         );
 
@@ -32,13 +39,7 @@ const pokemonFightController = {
     if (!validId(pokemon1) || !validId(pokemon2) || !validId(winner))
       return res
         .status(httpBadRequest)
-        .json(
-          buildResponse(
-            httpBadRequest,
-            resOpFailure,
-            'Incorrect id format. Only positive integers greater than 0 are valid ids'
-          )
-        );
+        .json(buildResponse(httpBadRequest, resOpFailure, msgInvalidIdFormat));
 
     const pokemon1MongoId = await getPokemonMongoId(pokemon1);
     const pokemon2MongoId = await getPokemonMongoId(pokemon2);
@@ -47,13 +48,7 @@ const pokemonFightController = {
     if (!pokemon1MongoId || !pokemon2MongoId || !winnerMongoId)
       return res
         .status(httpBadRequest)
-        .json(
-          buildResponse(
-            httpBadRequest,
-            resOpFailure,
-            "One or more pokemon don't exist in the database"
-          )
-        );
+        .json(buildResponse(httpBadRequest, resOpFailure, msgPokemonUnknown));
 
     const fight = new PokemonFight({
       pokemon1: pokemon1MongoId,
@@ -69,7 +64,7 @@ const pokemonFightController = {
             buildResponse(
               httpServerError,
               resOpFailure,
-              'Error inserting pokemon fight',
+              msgPokemonFightInsertFailure,
               err.message
             )
           );
@@ -77,11 +72,7 @@ const pokemonFightController = {
         res
           .status(httpOK)
           .json(
-            buildResponse(
-              httpOK,
-              resOpSuccess,
-              'Pokemon fight inserted successfully'
-            )
+            buildResponse(httpOK, resOpSuccess, msgPokemonFightInsertSuccess)
           );
       }
     });

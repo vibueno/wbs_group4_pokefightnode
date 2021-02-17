@@ -7,8 +7,6 @@ const constants = {
   resOpFailure: 'failed',
 
   validInfoRequests: ['type', 'name', 'base'],
-
-  msgInvalidFightResult: 'There must one and only one winner',
 };
 
 module.exports = constants;

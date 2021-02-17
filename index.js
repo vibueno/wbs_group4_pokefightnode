@@ -1,4 +1,3 @@
-// Create entry point
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -9,6 +8,8 @@ const { PORT } = process.env;
 
 const db = require('./utils/db');
 const { httpNotFound, resOpFailure } = require('./constants');
+
+const { msgServerStarted } = require('./messages');
 
 const buildResponse = require('./utils/response');
 
@@ -27,4 +28,4 @@ app.use('/', pokemonRoutes);
 
 app.get('*', appRoutes);
 
-app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
+app.listen(PORT, () => console.log(msgServerStarted));

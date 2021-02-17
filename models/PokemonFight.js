@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const { msgInvalidWinner } = require('../messages.js');
+
 const pokemonFightSchema = new Schema({
   date: { type: Date, default: Date.now() },
   pokemon1: { type: mongoose.Types.ObjectId, ref: 'Pokemon', required: true },
@@ -16,8 +18,7 @@ const pokemonFightSchema = new Schema({
           value._id.equals(this.pokemon2._id)
         );
       },
-      message:
-        'The winner must be one of the pokemons who took part in the fight',
+      message: msgInvalidWinner,
     },
   },
 });
