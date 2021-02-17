@@ -13,14 +13,13 @@ const pokemonFightController = {
   create: async (req, res) => {
     const fight = new PokemonFight({
       pokemon1: {
-        id: 1,
         name: 'test',
-        winner: false,
+        winner: true,
       },
       pokemon2: {
         id: 1,
         name: 'test',
-        winner: true,
+        winner: false,
       },
     });
 
