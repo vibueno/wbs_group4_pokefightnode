@@ -8,7 +8,7 @@ dotenv.config();
 const { PORT } = process.env;
 
 const db = require('./utils/db');
-const { httpNotFound, resOpFailure } = require('./utils/constants');
+const { httpNotFound, resOpFailure } = require('./constants');
 
 const buildResponse = require('./utils/response');
 

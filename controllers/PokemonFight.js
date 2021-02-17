@@ -5,7 +5,7 @@ const {
   httpServerError,
   resOpSuccess,
   resOpFailure,
-} = require('../utils/constants');
+} = require('../constants');
 
 const buildResponse = require('../utils/response');
 
