@@ -12,7 +12,7 @@ const {
 } = require('../constants');
 
 const pokemonController = {
-  mongoGetAll: async (req, res) => {
+  getAll: async (req, res) => {
     try {
       const pokemonList = await Pokemon.find({}).sort({
         id: 1,
@@ -45,7 +45,7 @@ const pokemonController = {
     }
   },
 
-  mongoGetById: async (req, res) => {
+  getById: async (req, res) => {
     const { id } = req.params;
 
     try {
@@ -90,7 +90,7 @@ const pokemonController = {
           );
     }
   },
-  mongoGetInfo: async (req, res) => {
+  getInfo: async (req, res) => {
     const { id, info } = req.params;
     try {
       if (!validId(id))

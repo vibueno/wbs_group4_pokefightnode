@@ -10,8 +10,8 @@ router.get('/', (req, res) => {
 
 router.get('/pokemon/fight/create', pokemonFightController.create);
 
-router.get('/pokemon/:id/:info', pokemonController.mongoGetInfo);
-router.get('/pokemon/:id', pokemonController.mongoGetById);
-router.get('/pokemon', pokemonController.mongoGetAll);
+router.get('/pokemon/:id/:info', pokemonController.getInfo);
+router.get('/pokemon/:id', pokemonController.getById);
+router.get('/pokemon', pokemonController.getAll);
 
 module.exports = router;
