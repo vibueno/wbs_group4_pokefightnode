@@ -9,6 +9,14 @@ const validations = {
   validInfoRequest: val => {
     return validInfoRequests.includes(val) ? true : false;
   },
+
+  validWinners: (hasWon1, hasWon2) => {
+    return hasWon1 != hasWon2;
+  },
+
+  isSet: value => {
+    return value != null;
+  },
 };
 
 module.exports = validations;

@@ -15,28 +15,16 @@ const buildResponse = require('./utils/response');
 const app = express();
 
 app.use(bodyParser.json());
-// urlencoded format
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors());
 
 // import routes
-const pokeRoutes = require('./routes/Pokemon');
+const pokemonRoutes = require('./routes/Pokemon');
+const appRoutes = require('./routes/App');
 
-// use postsRoutes
-app.use('/', pokeRoutes);
+app.use('/', pokemonRoutes);
 
-app.get('*', function (req, res) {
-  res
-    .status(httpNotFound)
-    .send(
-      buildResponse(
-        httpNotFound,
-        resOpFailure,
-        "The requested page does not exist. But don't worry, we all have felt lost at some point in our lives."
-      )
-    );
-});
+app.get('*', appRoutes);
 
-// Starting server
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));

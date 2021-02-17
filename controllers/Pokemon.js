@@ -11,7 +11,7 @@ const {
   resOpFailure,
 } = require('../utils/constants');
 
-const pokeController = {
+const pokemonController = {
   mongoGetAll: async (req, res) => {
     try {
       const pokemonList = await Pokemon.find({}).sort({
@@ -143,4 +143,4 @@ const pokeController = {
   },
 };
 
-module.exports = pokeController;
+module.exports = pokemonController;
