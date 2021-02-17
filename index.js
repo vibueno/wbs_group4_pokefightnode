@@ -5,10 +5,12 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 // init of dotenv
 dotenv.config();
+const { PORT } = process.env;
 
 const db = require('./utils/db');
+const { httpNotFound, resOpFailure } = require('./utils/constants');
 
-const { PORT } = process.env;
+const buildResponse = require('./utils/response');
 
 const app = express();
 
@@ -23,6 +25,18 @@ const pokeRoutes = require('./routes/Pokemon');
 
 // use postsRoutes
 app.use('/', pokeRoutes);
+
+app.get('*', function (req, res) {
+  res
+    .status(httpNotFound)
+    .send(
+      buildResponse(
+        httpNotFound,
+        resOpFailure,
+        "The requested page does not exist. But don't worry, we all have felt lost at some point in our lives."
+      )
+    );
+});
 
 // Starting server
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));

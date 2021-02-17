@@ -3,19 +3,42 @@ const Schema = mongoose.Schema;
 
 const pokemonSchema = new Schema({
   id: Number,
-  name: Array,
-  type: Array,
-  base: Array,
-  abilities: { normal: Array, hidden: Array },
+  name: Object,
+  type: [
+    {
+      type: String,
+    },
+  ],
+  base: Object,
+  abilities: {
+    normal: [
+      {
+        type: String,
+      },
+    ],
+    hidden: [
+      {
+        type: String,
+      },
+    ],
+  },
   description: String,
-  eggGroups: Array,
+  eggGroups: [
+    {
+      type: String,
+    },
+  ],
   family: {
     id: Number,
     evolutionStage: Number,
     evolutionLine: Array,
   },
   gen: Number,
-  gender: Array,
+  gender: [
+    {
+      type: Number,
+    },
+  ],
   height: String,
   legendary: Boolean,
   mega: Boolean,

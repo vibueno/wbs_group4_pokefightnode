@@ -1,7 +1,14 @@
-const buildResponse = (status, message, data) => {
+const {
+  httpOK,
+  httpNotFound,
+  resOpSuccess,
+  resOpFailure,
+} = require('./constants');
+
+const buildResponse = (status, operation, message, data = []) => {
   return {
     status: status,
-    operation: status === 200 ? 'succeeded' : 'failed',
+    operation: operation,
     message: message,
     data: data,
   };

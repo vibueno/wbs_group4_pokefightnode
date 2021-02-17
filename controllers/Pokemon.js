@@ -1,8 +1,15 @@
-//const pokeData = require('../data/pokedex.json');
 const Pokemon = require('../models/Pokemon');
 
 const buildResponse = require('../utils/response');
-const { validId } = require('../utils/validations');
+const { validId, validInfoRequest } = require('../utils/validations');
+const {
+  httpOK,
+  httpBadRequest,
+  httpNotFound,
+  httpServerError,
+  resOpSuccess,
+  resOpFailure,
+} = require('../utils/constants');
 
 const pokeController = {
   mongoGetAll: async (req, res) => {
@@ -12,10 +19,11 @@ const pokeController = {
       });
 
       res
-        .status(200)
+        .status(httpOK)
         .json(
           buildResponse(
-            200,
+            httpOK,
+            resOpSuccess,
             `Succesfully fetched ${pokemonList.length} pokemon`,
             pokemonList
           )
@@ -25,8 +33,15 @@ const pokeController = {
       if (e.status) res.status(e.status).json(e);
       else
         res
-          .status(500)
-          .json(buildResponse(500, 'Internal mongodb error', e.message));
+          .status(httpServerError)
+          .json(
+            buildResponse(
+              httpServerError,
+              resOpFailure,
+              'Internal mongodb error',
+              e.message
+            )
+          );
     }
   },
 
@@ -34,15 +49,29 @@ const pokeController = {
     const { id } = req.params;
 
     try {
-      if (!validId(id)) throw buildResponse(400, 'Incorrect id format');
+      if (!validId(id))
+        throw buildResponse(
+          httpBadRequest,
+          resOpFailure,
+          'Incorrect id format. Only positive integers greater than 0 are valid ids'
+        );
       const pokemon = await Pokemon.find({ id: parseInt(id) });
+
+      if (!pokemon.length)
+        throw buildResponse(
+          httpNotFound,
+          resOpSuccess,
+          `Pokemon with id ${id} does not exist`
+        );
+
       res
-        .status(200)
+        .status(httpOK)
         .json(
           buildResponse(
-            200,
+            httpOK,
+            resOpSuccess,
             `Succesfully fetched pokemon with id ${id}`,
-            pokemon
+            pokemon[0]
           )
         );
     } catch (e) {
@@ -50,21 +79,48 @@ const pokeController = {
       if (e.status) res.status(e.status).json(e);
       else
         res
-          .status(500)
-          .json(buildResponse(500, 'Internal mongodb error', e.message));
+          .status(httpServerError)
+          .json(
+            buildResponse(
+              httpServerError,
+              resOpFailure,
+              'Internal mongodb error',
+              e.message
+            )
+          );
     }
   },
   mongoGetInfo: async (req, res) => {
     const { id, info } = req.params;
     try {
-      if (!validId(id)) throw buildResponse(400, 'Incorrect id format');
+      if (!validId(id))
+        throw buildResponse(
+          httpBadRequest,
+          resOpFailure,
+          'Incorrect id format'
+        );
       const pokemon = await Pokemon.find({ id: parseInt(id) });
-      const pokemonInfo = pokemon[0][info];
+
+      if (!validInfoRequest(info))
+        throw buildResponse(
+          httpBadRequest,
+          resOpFailure,
+          'The requested info cannot be fetched'
+        );
+
+      if (!pokemon.length)
+        throw buildResponse(
+          httpNotFound,
+          resOpSuccess,
+          `Pokemon with id ${id} does not exist`
+        );
+      const pokemonInfo = pokemon[0][info.toLowerCase()];
       res
-        .status(200)
+        .status(httpOK)
         .json(
           buildResponse(
-            200,
+            httpOK,
+            resOpSuccess,
             `Succesfully fetched ${info} from pokemon with id ${id}`,
             pokemonInfo
           )
@@ -74,33 +130,17 @@ const pokeController = {
       if (e.status) res.status(e.status).json(e);
       else
         res
-          .status(500)
-          .json(buildResponse(500, 'Internal mongodb error', e.message));
+          .status(httpServerError)
+          .json(
+            buildResponse(
+              httpServerError,
+              resOpFailure,
+              'Internal mongodb error',
+              e.message
+            )
+          );
     }
   },
-
-  /*
-  getAll: async (req, res) => {
-    res.status(200).send(pokeData);
-  },
-  getById: async (req, res) => {
-    const { id } = req.params;
-    const pokemon = pokeData.filter(item => item.id == id);
-    res.status(200).send(pokemon);
-  },
-  getInfo: async (req, res) => {
-    const { id, info } = req.params;
-
-    try {
-      const pokeId = pokeData.filter(pokemon => pokemon.id == id);
-      if (!pokeId[0][info]) res.sendStatus(404);
-      else res.status(200).send(pokeId[0][info]);
-    } catch (e) {
-      console.log(e);
-      res.sendStatus(404);
-    }
-  },
-  */
 };
 
 module.exports = pokeController;
