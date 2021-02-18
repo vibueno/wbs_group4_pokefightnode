@@ -90,7 +90,13 @@ const pokemonFightController = {
       : hallOfFameDefaultLimit;
 
     const pokemonHallOfFame = await PokemonFight.aggregate([
-      { $group: { _id: { pokemon: '$winner' }, count: { $sum: 1 } } },
+      {
+        $group: {
+          _id: { pokemon: '$winner' },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { count: -1 } },
     ])
       .limit(limit)
       .exec((err, pokemonWinners) => {
@@ -116,10 +122,6 @@ const pokemonFightController = {
                 picture: winner._id.spritefront,
                 victorycount: winner.count,
               }));
-
-              hallOfFame.sort(function (a, b) {
-                return b.victorycount - a.victorycount;
-              });
 
               return res
                 .status(httpOK)
