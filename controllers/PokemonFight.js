@@ -58,7 +58,7 @@ const pokemonFightController = {
       winner: winnerMongoId,
     });
 
-    await fight.save(err => {
+    await fight.save((err, fight) => {
       if (err)
         res
           .status(httpServerError)
@@ -74,7 +74,12 @@ const pokemonFightController = {
         res
           .status(httpOK)
           .json(
-            buildResponse(httpOK, resOpSuccess, msgPokemonFightInsertSuccess)
+            buildResponse(
+              httpOK,
+              resOpSuccess,
+              msgPokemonFightInsertSuccess,
+              fight
+            )
           );
       }
     });
