@@ -115,6 +115,7 @@ const pokemonFightController = {
               const hallOfFame = populatedpokemonWinners.map(winner => ({
                 id: winner._id.id,
                 name: winner._id.name.english,
+                picture: winner._id.spritefront,
                 victorycount: winner.count,
               }));
 
