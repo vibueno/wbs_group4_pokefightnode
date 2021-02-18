@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const { msgInvalidWinner } = require('../messages.js');
 
 const pokemonFightSchema = new Schema({
-  date: { type: Date, default: Date.now() },
+  date: { type: Date, default: () => Date.now() },
   pokemon1: { type: mongoose.Types.ObjectId, ref: 'Pokemon', required: true },
   pokemon2: { type: mongoose.Types.ObjectId, ref: 'Pokemon', required: true },
   winner: {
