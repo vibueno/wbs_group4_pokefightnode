@@ -22,7 +22,6 @@ const {
   msgPokemonFightInsertFailure,
   msgPokemonFightInsertSuccess,
   msgPokemonHallOfFameFailure,
-  msgPokemonHallOfFameSuccess,
 } = require('../messages');
 
 const pokemonFightController = {
@@ -129,7 +128,7 @@ const pokemonFightController = {
                   buildResponse(
                     httpOK,
                     resOpSuccess,
-                    msgPokemonHallOfFameSuccess,
+                    `Successfully fetched top ${hallOfFame.length} pokemon from hall of fame`,
                     hallOfFame
                   )
                 );

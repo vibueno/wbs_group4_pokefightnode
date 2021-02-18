@@ -13,7 +13,6 @@ const messages = {
   msgInvalidFightResultFormat: 'Invalid fight result format',
   msgInvalidWinner:
     'The winner must be one of the pokemons who took part in the fight',
-  msgPokemonHallOfFameSuccess: 'Successfully fetched hall of fame',
   msgPokemonHallOfFameFailure:
     'There was a problem fetching the pokemon hall of fame from the server',
 };
