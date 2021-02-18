@@ -8,8 +8,6 @@ router.get('/', (req, res) => {
   res.redirect('/pokemon');
 });
 
-router.post('/pokemon/fight/create', pokemonFightController.create);
-
 router.get('/pokemon/:id/:info', pokemonController.getInfo);
 router.get('/pokemon/:id', pokemonController.getById);
 router.get('/pokemon', pokemonController.getAll);

@@ -81,6 +81,11 @@ const pokemonFightController = {
       }
     });
   },
+
+  /*
+    Returns the number of victories for a list of pokemons
+    limited by req.query.limit || hallOfFameDefaultLimit
+  */
   getHallOfFame: async (req, res) => {
     const limit = req.query.limit
       ? parseInt(req.query.limit)

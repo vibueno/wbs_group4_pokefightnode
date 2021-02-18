@@ -1,26 +1,29 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+
+// Dotenv set-up
 const dotenv = require('dotenv');
-// init of dotenv
 dotenv.config();
+
 const { PORT } = process.env;
 
+// Own imports
 const db = require('./utils/db');
 const { httpNotFound, resOpFailure } = require('./constants');
-
 const { msgServerStarted } = require('./messages');
-
 const buildResponse = require('./utils/response');
 
+// Start express
 const app = express();
 
+// Body parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors());
 
-// import routes
+// Routes
 const pokemonRoutes = require('./routes/Pokemon');
 const pokemonFightRoutes = require('./routes/PokemonFight');
 const appRoutes = require('./routes/App');
@@ -30,4 +33,5 @@ app.use('/', pokemonRoutes);
 
 app.use('*', appRoutes);
 
+// Server start
 app.listen(PORT, () => console.log(msgServerStarted));

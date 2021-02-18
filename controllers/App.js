@@ -6,7 +6,7 @@ const appController = {
   pageNotFound: (req, res) => {
     res
       .status(httpNotFound)
-      .send(buildResponse(httpNotFound, resOpFailure, msgPageNotFound));
+      .json(buildResponse(httpNotFound, resOpFailure, msgPageNotFound));
   },
 };
 
