@@ -5,6 +5,7 @@
 - [Description](#description)
 - [Organisation](#organisation)
 - [Data](#data)
+- [Endpoints](#endpoints)
 - [Live](#live)
 - [Programming](#programming)
 
@@ -24,6 +25,17 @@ The data for this project has been obtained from these sources:
 - https://pokeapi.co/
 
 Since we were provided with a JSON file that didn't include all the information we wanted to use, we went for a [nice ride](./doc/databasemerge.md) to merge all the information together in a database.
+
+## Endpoints
+
+| HTTP Method | Endpoint                                                                                                       | Description                                                                                                                  |
+| ----------- | -------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| GET         | [/pokemon](https://wbsgroup4pokefight.herokuapp.com/pokemon)                                                   | Retrieves all pokemon                                                                                                        |
+| GET         | [/pokemon/:id](https://wbsgroup4pokefight.herokuapp.com/pokemon/76)                                            | Retrieves pokemon with id 1                                                                                                  |
+| GET         | [/pokemon/:id/:info](https://wbsgroup4pokefight.herokuapp.com/pokemon/76/name)                                 | Retrieves specific info (type, name or type) from pokemon with id 1                                                          |
+| GET         | [/pokemon/fight/halloffame](https://wbsgroup4pokefight.herokuapp.com/pokemon/fight/halloffame)                 | Retrieves top 10 pokemon from hall of fame                                                                                   |
+| GET         | [/pokemon/fight/halloffame?limit=n](https://wbsgroup4pokefight.herokuapp.com/pokemon/fight/halloffame?limit=4) | Retrieves _n_ pokemon from hall of fame                                                                                      |
+| POST        | /pokemon/fight/create                                                                                          | Saves a fight result. Request body must contain a JSON object with format: `{"pokemon1": id, "pokemon2": id, "winner:" id }` |
 
 ## Live
 
