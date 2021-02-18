@@ -1,7 +1,5 @@
 const Pokemon = require('../models/Pokemon');
 
-const buildResponse = require('../utils/response');
-const { validId, validInfoRequest } = require('../utils/validations');
 const {
   httpOK,
   httpBadRequest,
@@ -16,6 +14,9 @@ const {
   msgMongoDBError,
   msgPokemonInfoNotFetchable,
 } = require('../messages');
+
+const buildResponse = require('../utils/response');
+const { validId, validInfoRequest } = require('../utils/validations');
 
 const pokemonController = {
   getAll: async (req, res) => {

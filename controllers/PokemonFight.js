@@ -10,11 +10,6 @@ const {
   hallOfFameDefaultLimit,
 } = require('../constants');
 
-const buildResponse = require('../utils/response');
-
-const { validId, validFightResultFormat } = require('../utils/validations');
-
-const getPokemonMongoId = require('../utils/pokemon');
 const {
   msgInvalidFightResultFormat,
   msgInvalidIdFormat,
@@ -23,6 +18,10 @@ const {
   msgPokemonFightInsertSuccess,
   msgPokemonHallOfFameFailure,
 } = require('../messages');
+
+const buildResponse = require('../utils/response');
+const { validId, validFightResultFormat } = require('../utils/validations');
+const getPokemonMongoId = require('../utils/pokemon');
 
 const pokemonFightController = {
   create: async (req, res) => {

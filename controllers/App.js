@@ -1,6 +1,7 @@
 const { httpNotFound, resOpFailure } = require('../constants');
-const buildResponse = require('../utils/response');
 const { msgPageNotFound } = require('../messages');
+
+const buildResponse = require('../utils/response');
 
 const appController = {
   pageNotFound: (req, res) => {
