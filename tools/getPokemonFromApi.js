@@ -1,3 +1,5 @@
+// See doc/databasemerge.md
+
 const main = async () => {
   const pokemon = [];
 

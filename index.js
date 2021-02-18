@@ -1,42 +1,37 @@
-// Create entry point
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+
+// Dotenv set-up
 const dotenv = require('dotenv');
-// init of dotenv
 dotenv.config();
+
 const { PORT } = process.env;
 
+// Own imports
 const db = require('./utils/db');
-const { httpNotFound, resOpFailure } = require('./utils/constants');
-
+const { httpNotFound, resOpFailure } = require('./constants');
+const { msgServerStarted } = require('./messages');
 const buildResponse = require('./utils/response');
 
+// Start express
 const app = express();
 
+// Body parser
 app.use(bodyParser.json());
-// urlencoded format
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors());
 
-// import routes
-const pokeRoutes = require('./routes/Pokemon');
+// Routes
+const pokemonRoutes = require('./routes/Pokemon');
+const pokemonFightRoutes = require('./routes/PokemonFight');
+const appRoutes = require('./routes/App');
 
-// use postsRoutes
-app.use('/', pokeRoutes);
+app.use('/pokemon/fight/', pokemonFightRoutes);
+app.use('/', pokemonRoutes);
 
-app.get('*', function (req, res) {
-  res
-    .status(httpNotFound)
-    .send(
-      buildResponse(
-        httpNotFound,
-        resOpFailure,
-        "The requested page does not exist. But don't worry, we all have felt lost at some point in our lives."
-      )
-    );
-});
+app.use('*', appRoutes);
 
-// Starting server
-app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
+// Server start
+app.listen(PORT, () => console.log(msgServerStarted));

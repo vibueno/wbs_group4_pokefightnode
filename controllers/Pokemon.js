@@ -1,7 +1,5 @@
 const Pokemon = require('../models/Pokemon');
 
-const buildResponse = require('../utils/response');
-const { validId, validInfoRequest } = require('../utils/validations');
 const {
   httpOK,
   httpBadRequest,
@@ -9,10 +7,19 @@ const {
   httpServerError,
   resOpSuccess,
   resOpFailure,
-} = require('../utils/constants');
+} = require('../constants');
 
-const pokeController = {
-  mongoGetAll: async (req, res) => {
+const {
+  msgInvalidIdFormat,
+  msgMongoDBError,
+  msgPokemonInfoNotFetchable,
+} = require('../messages');
+
+const buildResponse = require('../utils/response');
+const { validId, validInfoRequest } = require('../utils/validations');
+
+const pokemonController = {
+  getAll: async (req, res) => {
     try {
       const pokemonList = await Pokemon.find({}).sort({
         id: 1,
@@ -38,23 +45,19 @@ const pokeController = {
             buildResponse(
               httpServerError,
               resOpFailure,
-              'Internal mongodb error',
+              msgMongoDBError,
               e.message
             )
           );
     }
   },
 
-  mongoGetById: async (req, res) => {
+  getById: async (req, res) => {
     const { id } = req.params;
 
     try {
       if (!validId(id))
-        throw buildResponse(
-          httpBadRequest,
-          resOpFailure,
-          'Incorrect id format. Only positive integers greater than 0 are valid ids'
-        );
+        throw buildResponse(httpBadRequest, resOpFailure, msgInvalidIdFormat);
       const pokemon = await Pokemon.find({ id: parseInt(id) });
 
       if (!pokemon.length)
@@ -84,28 +87,24 @@ const pokeController = {
             buildResponse(
               httpServerError,
               resOpFailure,
-              'Internal mongodb error',
+              msgMongoDBError,
               e.message
             )
           );
     }
   },
-  mongoGetInfo: async (req, res) => {
+  getInfo: async (req, res) => {
     const { id, info } = req.params;
     try {
       if (!validId(id))
-        throw buildResponse(
-          httpBadRequest,
-          resOpFailure,
-          'Incorrect id format'
-        );
+        throw buildResponse(httpBadRequest, resOpFailure, msgInvalidIdFormat);
       const pokemon = await Pokemon.find({ id: parseInt(id) });
 
       if (!validInfoRequest(info))
         throw buildResponse(
           httpBadRequest,
           resOpFailure,
-          'The requested info cannot be fetched'
+          msgPokemonInfoNotFetchable
         );
 
       if (!pokemon.length)
@@ -135,7 +134,7 @@ const pokeController = {
             buildResponse(
               httpServerError,
               resOpFailure,
-              'Internal mongodb error',
+              msgMongoDBError,
               e.message
             )
           );
@@ -143,4 +142,4 @@ const pokeController = {
   },
 };
 
-module.exports = pokeController;
+module.exports = pokemonController;

@@ -3,7 +3,7 @@ const {
   httpNotFound,
   resOpSuccess,
   resOpFailure,
-} = require('./constants');
+} = require('../constants');
 
 const buildResponse = (status, operation, message, data = []) => {
   return {
