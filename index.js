@@ -10,8 +10,8 @@ const { PORT } = process.env;
 
 // Own imports
 const db = require('./utils/db');
-const { httpNotFound, resOpFailure } = require('./constants');
-const { msgServerStarted } = require('./messages');
+const { httpNotFound, resOpFailure } = require('./variables/constants');
+const { msgServerStarted } = require('./variables/messages');
 const buildResponse = require('./utils/response');
 
 // Start express

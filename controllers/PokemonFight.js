@@ -8,7 +8,7 @@ const {
   resOpSuccess,
   resOpFailure,
   hallOfFameDefaultLimit,
-} = require('../constants');
+} = require('../variables/constants');
 
 const {
   msgInvalidFightResultFormat,
@@ -17,7 +17,7 @@ const {
   msgPokemonFightInsertFailure,
   msgPokemonFightInsertSuccess,
   msgPokemonHallOfFameFailure,
-} = require('../messages');
+} = require('../variables/messages');
 
 const buildResponse = require('../utils/response');
 const { validId, validFightResultFormat } = require('../utils/validations');

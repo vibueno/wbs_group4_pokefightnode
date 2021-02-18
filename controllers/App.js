@@ -1,5 +1,5 @@
-const { httpNotFound, resOpFailure } = require('../constants');
-const { msgPageNotFound } = require('../messages');
+const { httpNotFound, resOpFailure } = require('../variables/constants');
+const { msgPageNotFound } = require('../variables/messages');
 
 const buildResponse = require('../utils/response');
 
