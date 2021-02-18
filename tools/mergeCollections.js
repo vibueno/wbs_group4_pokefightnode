@@ -1,10 +1,12 @@
-const { MongoClient } = require("mongodb");
+// See doc/databasemerge.md
 
-const dbname1 = "pokemon1";
-const dbname2 = "pokemon2";
+const { MongoClient } = require('mongodb');
+
+const dbname1 = 'pokemon1';
+const dbname2 = 'pokemon2';
 
 const main = async () => {
-  const client = new MongoClient("mongodb://localhost:27017", {
+  const client = new MongoClient('mongodb://localhost:27017', {
     useUnifiedTopology: true,
   });
 
@@ -16,16 +18,16 @@ const main = async () => {
 
     pokemon2 = await client
       .db(dbname2)
-      .collection("pokemon")
+      .collection('pokemon')
       .find({})
       .toArray();
 
     const UpdatePokemon = async () => {
       await Promise.all(
-        pokemon2.map(async (pokemon) => {
+        pokemon2.map(async pokemon => {
           const result = await client
             .db(dbname1)
-            .collection("pokemon")
+            .collection('pokemon')
             .updateOne(
               { id: parseInt(pokemon.number) },
               {

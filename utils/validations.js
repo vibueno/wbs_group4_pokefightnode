@@ -1,4 +1,4 @@
-const { validInfoRequests } = require('./constants');
+const { validInfoRequests } = require('../constants');
 
 const validations = {
   validId: val => {
@@ -8,6 +8,15 @@ const validations = {
 
   validInfoRequest: val => {
     return validInfoRequests.includes(val) ? true : false;
+  },
+
+  validFightResultFormat: fightResult => {
+    return fightResult.pokemon1 &&
+      fightResult.pokemon2 &&
+      fightResult.winner &&
+      Object.keys(fightResult).length === 3
+      ? true
+      : false;
   },
 };
 

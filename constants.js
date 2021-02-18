@@ -7,6 +7,7 @@ const constants = {
   resOpFailure: 'failed',
 
   validInfoRequests: ['type', 'name', 'base'],
+  hallOfFameDefaultLimit: 10,
 };
 
 module.exports = constants;
