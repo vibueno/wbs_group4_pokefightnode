@@ -1,3 +1,4 @@
+const Pokemon = require('../models/Pokemon');
 const PokemonFight = require('../models/PokemonFight');
 
 const {
@@ -6,6 +7,7 @@ const {
   httpServerError,
   resOpSuccess,
   resOpFailure,
+  hallOfFameDefaultLimit,
 } = require('../constants');
 
 const buildResponse = require('../utils/response');
@@ -19,6 +21,8 @@ const {
   msgPokemonUnknown,
   msgPokemonFightInsertFailure,
   msgPokemonFightInsertSuccess,
+  msgPokemonHallOfFameFailure,
+  msgPokemonHallOfFameSuccess,
 } = require('../messages');
 
 const pokemonFightController = {
@@ -76,6 +80,57 @@ const pokemonFightController = {
           );
       }
     });
+  },
+  getHallOfFame: async (req, res) => {
+    const limit = req.query.limit
+      ? parseInt(req.query.limit)
+      : hallOfFameDefaultLimit;
+
+    const pokemonHallOfFame = await PokemonFight.aggregate([
+      { $group: { _id: { pokemon: '$winner' }, count: { $sum: 1 } } },
+    ])
+      .limit(limit)
+      .exec((err, pokemonWinners) => {
+        Pokemon.populate(
+          pokemonWinners,
+          { path: '_id' },
+          (err, populatedpokemonWinners) => {
+            if (err)
+              return res
+                .status(httpServerError)
+                .json(
+                  buildResponse(
+                    httpServerError,
+                    resOpFailure,
+                    msgPokemonHallOfFameFailure,
+                    err.message
+                  )
+                );
+            else {
+              const hallOfFame = populatedpokemonWinners.map(winner => ({
+                id: winner._id.id,
+                name: winner._id.name.english,
+                victorycount: winner.count,
+              }));
+
+              hallOfFame.sort(function (a, b) {
+                return b.victorycount - a.victorycount;
+              });
+
+              return res
+                .status(httpOK)
+                .json(
+                  buildResponse(
+                    httpOK,
+                    resOpSuccess,
+                    msgPokemonHallOfFameSuccess,
+                    hallOfFame
+                  )
+                );
+            }
+          }
+        );
+      });
   },
 };
 module.exports = pokemonFightController;

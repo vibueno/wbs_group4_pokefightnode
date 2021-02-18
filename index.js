@@ -22,8 +22,10 @@ app.use(cors());
 
 // import routes
 const pokemonRoutes = require('./routes/Pokemon');
+const pokemonFightRoutes = require('./routes/PokemonFight');
 const appRoutes = require('./routes/App');
 
+app.use('/', pokemonFightRoutes);
 app.use('/', pokemonRoutes);
 
 app.use('*', appRoutes);

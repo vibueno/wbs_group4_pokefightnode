@@ -11,6 +11,12 @@ const {
   resOpFailure,
 } = require('../constants');
 
+const {
+  msgInvalidIdFormat,
+  msgMongoDBError,
+  msgPokemonInfoNotFetchable,
+} = require('../messages');
+
 const pokemonController = {
   getAll: async (req, res) => {
     try {
@@ -38,7 +44,7 @@ const pokemonController = {
             buildResponse(
               httpServerError,
               resOpFailure,
-              'Internal mongodb error',
+              msgMongoDBError,
               e.message
             )
           );
@@ -50,11 +56,7 @@ const pokemonController = {
 
     try {
       if (!validId(id))
-        throw buildResponse(
-          httpBadRequest,
-          resOpFailure,
-          'Incorrect id format. Only positive integers greater than 0 are valid ids'
-        );
+        throw buildResponse(httpBadRequest, resOpFailure, msgInvalidIdFormat);
       const pokemon = await Pokemon.find({ id: parseInt(id) });
 
       if (!pokemon.length)
@@ -84,7 +86,7 @@ const pokemonController = {
             buildResponse(
               httpServerError,
               resOpFailure,
-              'Internal mongodb error',
+              msgMongoDBError,
               e.message
             )
           );
@@ -94,18 +96,14 @@ const pokemonController = {
     const { id, info } = req.params;
     try {
       if (!validId(id))
-        throw buildResponse(
-          httpBadRequest,
-          resOpFailure,
-          'Incorrect id format'
-        );
+        throw buildResponse(httpBadRequest, resOpFailure, msgInvalidIdFormat);
       const pokemon = await Pokemon.find({ id: parseInt(id) });
 
       if (!validInfoRequest(info))
         throw buildResponse(
           httpBadRequest,
           resOpFailure,
-          'The requested info cannot be fetched'
+          msgPokemonInfoNotFetchable
         );
 
       if (!pokemon.length)
@@ -135,7 +133,7 @@ const pokemonController = {
             buildResponse(
               httpServerError,
               resOpFailure,
-              'Internal mongodb error',
+              msgMongoDBError,
               e.message
             )
           );
