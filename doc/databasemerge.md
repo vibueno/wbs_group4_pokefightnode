@@ -7,27 +7,26 @@ These are the steps needed:
 
 The reason behind this strange step is that the API only allows querying for one specific Pokemon and after around 400 requests you get banned. Using the Opera VPN, you can get a new IP by restarting the browser.
 
-2. Remove all arrays outside objects and commas between objects with a text editor with no add-ons (otherwise the editor may crash due to the size of the file)
-
-3. Run these commands to import all data:
+2. Run these commands to import all data:
 
 ```bash
-mongoimport --host=localhost --db=pokemon1 --collection=pokemon --drop pokemon1.json
-mongoimport --host=localhost --db=pokemon2 --collection=pokemon --drop pokemon2.1.json
-mongoimport --host=localhost --db=pokemon2 --collection=pokemon pokemon2.2.json
-mongoimport --host=localhost --db=pokemon2 --collection=pokemon pokemon2.3.json
+mongoimport --uri "mongodb+srv://cluster0.a2pva.mongodb.net/wbs_group4_pokefight" --username wbs_group4_pokefight --drop --collection=pokemon --jsonArray pokedex.json
+mongoimport --uri "mongodb+srv://cluster0.a2pva.mongodb.net/wbs_group4_pokefight" --username wbs_group4_pokefight --drop --collection=pokemon --jsonArray pokemon1.json
+mongoimport --uri "mongodb+srv://cluster0.a2pva.mongodb.net/wbs_group4_pokefight" --username wbs_group4_pokefight --drop --collection=pokemon --jsonArray pokemon2.1.json
+mongoimport --uri "mongodb+srv://cluster0.a2pva.mongodb.net/wbs_group4_pokefight" --username wbs_group4_pokefight --collection=pokemon2 --jsonArray pokemon2.2.json
+mongoimport --uri "mongodb+srv://cluster0.a2pva.mongodb.net/wbs_group4_pokefight" --username wbs_group4_pokefight --collection=pokemon2 --jsonArray pokemon2.3.json
 ```
 
-4. Run tools/mergeCollections.js
+3. Run tools/mergeCollections.js
 
-5. Export the resulting database:
+4. Export the resulting database:
 
 ```bash
 mongoexport --host=localhost --db=pokemon1 --collection=pokemon --out=pokemonmerged.json
 ```
 
-6. Import it into Atlas:
+5. Import it into Atlas:
 
 ```bash
-mongoimport --uri "mongodb+srv://sandbox.2sbee.mongodb.net/pokemon" --username m001-student --drop --collection=pokemon pokemonmerged.json
+mongoimport --uri "mongodb+srv://sandbox.2sbee.mongodb.net/wbs_group4_pokefight" --username m001-student --drop --collection=pokemons --jsonArray pokemonmerged.json
 ```
