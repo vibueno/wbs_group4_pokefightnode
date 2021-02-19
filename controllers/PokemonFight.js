@@ -8,7 +8,7 @@ const {
   resOpSuccess,
   resOpFailure,
   hallOfFameDefaultLimit,
-} = require('../constants');
+} = require('../variables/constants');
 
 const {
   msgInvalidFightResultFormat,
@@ -17,7 +17,7 @@ const {
   msgPokemonFightInsertFailure,
   msgPokemonFightInsertSuccess,
   msgPokemonHallOfFameFailure,
-} = require('../messages');
+} = require('../variables/messages');
 
 const buildResponse = require('../utils/response');
 const { validId, validFightResultFormat } = require('../utils/validations');
@@ -58,7 +58,7 @@ const pokemonFightController = {
       winner: winnerMongoId,
     });
 
-    await fight.save(err => {
+    await fight.save((err, fight) => {
       if (err)
         res
           .status(httpServerError)
@@ -74,7 +74,12 @@ const pokemonFightController = {
         res
           .status(httpOK)
           .json(
-            buildResponse(httpOK, resOpSuccess, msgPokemonFightInsertSuccess)
+            buildResponse(
+              httpOK,
+              resOpSuccess,
+              msgPokemonFightInsertSuccess,
+              fight
+            )
           );
       }
     });
@@ -90,7 +95,13 @@ const pokemonFightController = {
       : hallOfFameDefaultLimit;
 
     const pokemonHallOfFame = await PokemonFight.aggregate([
-      { $group: { _id: { pokemon: '$winner' }, count: { $sum: 1 } } },
+      {
+        $group: {
+          _id: { pokemon: '$winner' },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { count: -1 } },
     ])
       .limit(limit)
       .exec((err, pokemonWinners) => {
@@ -116,10 +127,6 @@ const pokemonFightController = {
                 picture: winner._id.spritefront,
                 victorycount: winner.count,
               }));
-
-              hallOfFame.sort(function (a, b) {
-                return b.victorycount - a.victorycount;
-              });
 
               return res
                 .status(httpOK)
