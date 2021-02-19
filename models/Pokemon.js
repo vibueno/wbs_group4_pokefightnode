@@ -5,42 +5,34 @@ const pokemonSchema = new Schema({
   id: {
     type: Number,
   },
-  name: Object,
-  type: [
-    {
-      type: String,
-    },
-  ],
-  base: Object,
+  name: {
+    english: String,
+    japanese: String,
+    chinese: String,
+    french: String,
+  },
+  type: [String],
+  base: {
+    HP: Number,
+    Attack: Number,
+    Defense: Number,
+    'Sp. Attack': Number,
+    'Sp. Defense': Number,
+    Speed: Number,
+  },
   abilities: {
-    normal: [
-      {
-        type: String,
-      },
-    ],
-    hidden: [
-      {
-        type: String,
-      },
-    ],
+    normal: [String],
+    hidden: [String],
   },
   description: String,
-  eggGroups: [
-    {
-      type: String,
-    },
-  ],
+  eggGroups: [String],
   family: {
     id: Number,
     evolutionStage: Number,
-    evolutionLine: Array,
+    evolutionLine: [String],
   },
   gen: Number,
-  gender: [
-    {
-      type: Number,
-    },
-  ],
+  gender: [Number],
   height: String,
   legendary: Boolean,
   mega: Boolean,

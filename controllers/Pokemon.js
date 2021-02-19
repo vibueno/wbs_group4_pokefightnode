@@ -7,13 +7,13 @@ const {
   httpServerError,
   resOpSuccess,
   resOpFailure,
-} = require('../constants');
+} = require('../variables/constants');
 
 const {
   msgInvalidIdFormat,
   msgMongoDBError,
   msgPokemonInfoNotFetchable,
-} = require('../messages');
+} = require('../variables/messages');
 
 const buildResponse = require('../utils/response');
 const { validId, validInfoRequest } = require('../utils/validations');
